@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, send_from_directory
 import sqlite3
 from flask_cors import CORS  
-import os
+# import os
  
 app = Flask(__name__, static_folder='../client/build', static_url_path='/')
 CORS(app) 
