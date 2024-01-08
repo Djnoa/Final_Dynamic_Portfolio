@@ -1,0 +1,20 @@
+.navi-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 7%;
+    width: 10%;
+    height: 100vh;
+    background-color: aqua;
+    margin-left: -15px;
+}
+
+.navi-link {
+    
+    margin-left: 14%;
+    text-decoration: none;
+    color: orangered;
+    font-family: 'Bangers';
+    font-size: 2em;
+    -webkit-text-stroke: 1px black;
+}
