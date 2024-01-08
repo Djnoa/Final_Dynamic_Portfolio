@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, LabelList } from 'recharts';
- 
+
 const SkillsGraph = () => {
     const [skills, setSkills] = useState([]);
- 
+
     useEffect(() => {
         fetch('http://localhost:5000/skills')
             .then(response => response.json())
             .then(data => {
-                const transformedData = data.map(skill => ({
-                    skill_name: skill[0],
-                    Level: skill[1] 
-                }));
-                setSkills(transformedData);
+                // No transformation needed if the data is already in the correct format
+                setSkills(data);
             })
             .catch(error => console.error('Error fetching skills:', error));
     }, []);
- 
+
     return (
         <BarChart
             width={600}
@@ -37,6 +34,5 @@ const SkillsGraph = () => {
         </BarChart>
     );
 };
- 
+
 export default SkillsGraph;
- 
