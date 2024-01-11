@@ -1,7 +1,10 @@
-
-
 .port-image {
     width: 80%;
 
+}
+
+.port-image:hover {
+    transform: scale(2); 
+    transition: transform 0.3s ease-in-out; 
 }
 

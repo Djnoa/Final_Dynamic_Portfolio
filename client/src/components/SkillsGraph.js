@@ -28,8 +28,8 @@ const SkillsGraph = () => {
             <XAxis type="number" domain={[0, 100]} />
             <YAxis type="category" dataKey="skill_name" />
             <Tooltip cursor={{ fill: 'transparent' }} />
-            <Bar dataKey="Level" fill="#8884d8" barSize={20}>
-                <LabelList dataKey="Level" position="right" />
+            <Bar dataKey="level" fill="#8884d8" barSize={20}>
+                <LabelList dataKey="level" position="right" />
             </Bar>
         </BarChart>
     );
