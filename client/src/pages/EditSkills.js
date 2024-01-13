@@ -5,7 +5,7 @@ const EditSkills = () => {
     const [newSkill, setNewSkill] = useState('');
     const [newLevel, setNewLevel] = useState(0);
     const [editingSkillId, setEditingSkillId] = useState(null);
-    const [editLevel, setEditLevel] = useState('');
+    const [editLevels, setEditLevels] = useState({});
 
     const fetchSkills = () => {
         fetch('http://localhost:5000/skills')
@@ -31,15 +31,16 @@ const EditSkills = () => {
     };
 
     const startEdit = (skill) => {
-        setEditingSkillId(skill._id);
-        setEditLevel(skill.level);
+        setEditingSkillId(skill ? skill._id : null);
+        setEditLevels({ ...editLevels, [skill._id]: skill.level });
     };
+    
 
     const saveEdit = (id) => {
         fetch(`http://localhost:5000/update_skill/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ level: editLevel })
+            body: JSON.stringify({ level: editLevels[id] })
         }).then(() => {
             setEditingSkillId(null);
             fetchSkills();
@@ -65,31 +66,51 @@ const EditSkills = () => {
             <input type="number" value={newLevel} onChange={(e) => setNewLevel(e.target.value)} placeholder="Skill Level" />
             <button onClick={addSkill}>Add Skill</button>
 
-            {skills.map(skill => (
-                <div key={skill._id}>
-                    <span>{skill.skill_name}: </span>
-                    {editingSkillId === skill._id ? (
-                        <span>
-                            <input 
-                                type="number" 
-                                value={editLevel} 
-                                onChange={(e) => setEditLevel(e.target.value)} 
-                                placeholder={`Current Level: ${skill.level}`} 
-                            />
-                            <button onClick={() => saveEdit(skill._id)}>Save</button>
-                            <button onClick={cancelEdit}>Cancel</button>
-                        </span>
-                    ) : (
-                        <span>
-                            {skill.level}
-                            <button onClick={() => startEdit(skill)}>Edit</button>
-                        </span>
-                    )}
-                    <button onClick={() => deleteSkill(skill._id)}>Delete</button>
-                </div>
-            ))}
+            <div>
+                {editingSkillId !== null ? (
+                    <span>
+                        <input
+                            type="number"
+                            value={editLevels[editingSkillId] || ''}
+                            onChange={(e) => setEditLevels({ ...editLevels, [editingSkillId]: e.target.value })}
+                            placeholder={`Current Level: ${skills.find(skill => skill._id === editingSkillId).level || ''}`}
+                        />
+                        <button onClick={() => saveEdit(editingSkillId)}>Save</button>
+                        <button onClick={cancelEdit}>Cancel</button>
+                    </span>
+                ) : null}
+                <button onClick={() => startEdit(null)}>Edit</button>
+            </div>
+
+
+        {skills.map(skill => (
+    <div key={skill._id}>
+        <span>{skill.skill_name}: </span>
+
+        {editingSkillId === skill._id ? (
+            <span>
+                <input
+                    type="number"
+                    value={editLevels[skill._id] || skill.level}
+                    onChange={(e) => setEditLevels({ ...editLevels, [skill._id]: e.target.value })}
+                    placeholder={`Current Level: ${skill.level}`}
+                />
+                <button onClick={() => saveEdit(skill._id)}>Save</button>
+                <button onClick={cancelEdit}>Cancel</button>
+            </span>
+        ) : (
+            <span>
+                <button onClick={() => startEdit(skill)}>Edit</button>
+                <span>Current Level: {skill.level}</span>
+            </span>
+        )}
+    </div>
+))}
+
         </div>
     );
 };
 
 export default EditSkills;
+
+

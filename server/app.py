@@ -65,8 +65,12 @@ def delete_skill(id):
 def get_skills():
     skills_collection = mongo.db.skills
     skills = skills_collection.find({})
-    skills_list = [{"skill_name": skill["skill_name"], "level": skill["level"]} for skill in skills]
+    skills_list = [
+        {"_id": str(skill["_id"]), "skill_name": skill["skill_name"], "level": skill["level"]}
+        for skill in skills
+    ]
     return jsonify(skills_list)
+
 
 @app.route('/portfolio')
 def get_portfolio():
